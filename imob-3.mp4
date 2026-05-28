@@ -1,0 +1,363 @@
+// ─── CURSOR ───────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a, button, .service-card').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+});
+document.querySelectorAll('.reel-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.classList.add('expand'); cursor.classList.add('play-cursor'); });
+  el.addEventListener('mouseleave', () => { cursor.classList.remove('expand'); cursor.classList.remove('play-cursor'); });
+});
+
+// ─── NAV SCROLL ──────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ─── MOBILE MENU ─────────────────────────────────────────
+function openMobileMenu() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ─── FADE IN ON SCROLL ───────────────────────────────────
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+// ─── REEL AUTOPLAY ENGINE ────────────────────────────────
+let currentlyPlaying = null;
+const isMobile = () => window.matchMedia('(pointer: coarse)').matches;
+
+function playReel(card) {
+  const video = card.querySelector('.reel-video');
+  if (!video) return;
+
+  // pause whatever is playing
+  if (currentlyPlaying && currentlyPlaying !== card) {
+    pauseReel(currentlyPlaying);
+  }
+
+  video.muted = true; // autoplay requires muted
+  video.play().then(() => {
+    card.classList.add('playing');
+    currentlyPlaying = card;
+  }).catch(() => {});
+}
+
+function pauseReel(card) {
+  const video = card.querySelector('.reel-video');
+  if (!video) return;
+  video.pause();
+  video.currentTime = 0;
+  card.classList.remove('playing');
+  if (currentlyPlaying === card) currentlyPlaying = null;
+}
+
+// ── Desktop: hover ────────────────────────────────────────
+document.querySelectorAll('.reel-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    if (!isMobile()) playReel(card);
+  });
+  card.addEventListener('mouseleave', () => {
+    if (!isMobile()) pauseReel(card);
+  });
+
+  // click to toggle play/pause (both mobile and desktop)
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.reel-sound')) return; // handled separately
+    if (card.classList.contains('playing')) {
+      pauseReel(card);
+    } else {
+      playReel(card);
+    }
+  });
+
+  // sound toggle button
+  const soundBtn = card.querySelector('.reel-sound');
+  if (soundBtn) {
+    soundBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const video = card.querySelector('.reel-video');
+      if (!video) return;
+      video.muted = !video.muted;
+      soundBtn.innerHTML = video.muted ? iconMuted() : iconSound();
+    });
+  }
+});
+
+// ── Mobile: IntersectionObserver autoplay on scroll ───────
+if (isMobile()) {
+  const reelObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const card = entry.target;
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+        playReel(card);
+      } else {
+        pauseReel(card);
+      }
+    });
+  }, { threshold: [0, 0.6] });
+
+  document.querySelectorAll('.reel-card').forEach(card => {
+    reelObserver.observe(card);
+  });
+}
+
+// ─── SOUND ICONS ─────────────────────────────────────────
+function iconMuted() {
+  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>`;
+}
+function iconSound() {
+  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+  </svg>`;
+}
+
+// ─── FORM: MULTI-STEP SCHEDULING FLOW ─────────────────────────────────
+
+// Definir data mínima = amanhã
+(function initDateMin() {
+  const dateInput = document.getElementById('fdate');
+  if (!dateInput) return;
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  dateInput.min = tomorrow.toISOString().split('T')[0];
+  // Bloquear finais de semana ao mudar a data
+  dateInput.addEventListener('change', function() {
+    const d = new Date(this.value + 'T12:00:00');
+    const day = d.getDay();
+    if (day === 0 || day === 6) {
+      showFormInfo('Não atendemos aos fins de semana. Selecione uma data de segunda a sexta.');
+      this.value = '';
+    } else {
+      hideFormInfo();
+    }
+  });
+})();
+
+function showFormInfo(msg) {
+  const box = document.getElementById('scheduleInfo');
+  if (!box) return;
+  box.querySelector('span').textContent = msg;
+  box.style.borderColor = 'rgba(192,57,43,0.4)';
+  box.style.background  = 'rgba(192,57,43,0.06)';
+}
+function hideFormInfo() {
+  const box = document.getElementById('scheduleInfo');
+  if (!box) return;
+  box.querySelector('span').textContent = 'A reunião de alinhamento dura aproximadamente 30 minutos. Confirmaremos a disponibilidade em tempo real.';
+  box.style.borderColor = '';
+  box.style.background  = '';
+}
+
+// ── Etapa 1 → 2 ──────────────────────────────────────────────────────
+function goToStep2() {
+  const fname  = document.getElementById('fname').value.trim();
+  const fphone = document.getElementById('fphone').value.trim();
+  const ftype  = document.getElementById('ftype').value;
+
+  if (!fname || !fphone || !ftype) {
+    highlightMissing(['fname', 'fphone', 'ftype']);
+    alert('Preencha os campos obrigatórios: Nome, WhatsApp e Tipo de projeto.');
+    return;
+  }
+
+  document.getElementById('formStep1').style.display = 'none';
+  document.getElementById('formStep2').style.display = 'block';
+  setStepActive(2);
+}
+
+function goToStep1() {
+  document.getElementById('formStep2').style.display = 'none';
+  document.getElementById('formStep1').style.display = 'block';
+  setStepActive(1);
+}
+
+// ── Voltar do conflito para etapa 2 ──────────────────────────────────
+function backToSchedule() {
+  document.getElementById('formConflict').style.display = 'none';
+  document.getElementById('fdate').value = '';
+  document.getElementById('ftime').value = '';
+  document.getElementById('formStep2').style.display = 'block';
+  setStepActive(2);
+}
+
+// ── Resetar tudo ──────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('formError').style.display   = 'none';
+  document.getElementById('formConflict').style.display = 'none';
+  document.getElementById('formSuccess').style.display  = 'none';
+  document.getElementById('formStep1').style.display    = 'block';
+  document.getElementById('formSteps').style.display    = 'flex';
+  setStepActive(1);
+}
+
+// ── Indicador de etapas ───────────────────────────────────────────────
+function setStepActive(n) {
+  document.querySelectorAll('.form-step-item').forEach(el => {
+    const s = parseInt(el.dataset.step);
+    el.classList.toggle('active', s === n);
+    el.classList.toggle('done',   s < n);
+  });
+}
+
+// ── Highlight campos obrigatórios vazios ──────────────────────────────
+function highlightMissing(ids) {
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!el.value.trim()) {
+      el.style.borderColor = '#c0392b';
+      el.addEventListener('input', () => { el.style.borderColor = ''; }, { once: true });
+    }
+  });
+}
+
+// ── Envio principal ───────────────────────────────────────────────────
+async function submitSchedule() {
+  const fdate = document.getElementById('fdate').value;
+  const ftime = document.getElementById('ftime').value;
+
+  if (!fdate || !ftime) {
+    highlightMissing(['fdate', 'ftime']);
+    alert('Selecione a data e o horário desejados.');
+    return;
+  }
+
+  // Mostrar loading no botão
+  document.getElementById('btnSubmitText').style.display    = 'none';
+  document.getElementById('btnSubmitLoading').style.display = 'inline-flex';
+  document.querySelector('#formStep2 .btn-submit').disabled = true;
+  document.querySelector('#formStep2 .btn-back').disabled   = true;
+
+  // Idempotência no cliente: bloquear duplo-submit
+  const sessionKey = `df_booking:${document.getElementById('fphone').value}:${fdate}:${ftime}`;
+  if (sessionStorage.getItem(sessionKey)) {
+    showSuccess({
+      bookingId: sessionStorage.getItem(sessionKey),
+      date: fdate, time: ftime,
+      name: document.getElementById('fname').value.trim(),
+    });
+    return;
+  }
+
+  const payload = {
+    name:    document.getElementById('fname').value.trim(),
+    phone:   document.getElementById('fphone').value.trim(),
+    email:   document.getElementById('femail').value.trim(),
+    company: document.getElementById('fcompany').value.trim(),
+    service: document.getElementById('ftype').value,
+    message: document.getElementById('fmessage').value.trim(),
+    date:    fdate,
+    time:    ftime,
+  };
+
+  try {
+    const response = await fetch('/api/schedule', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      if (data.conflict) {
+        // Horário ocupado
+        showConflict(data.conflict);
+      } else {
+        // Salvar no sessionStorage para dedup
+        sessionStorage.setItem(sessionKey, data.bookingId || 'ok');
+        showSuccess({ bookingId: data.bookingId, date: fdate, time: ftime, name: payload.name });
+      }
+    } else {
+      showError(data.error || 'Não foi possível processar. Tente novamente.');
+    }
+
+  } catch (err) {
+    // Fallback: timeout ou erro de rede
+    if (err.name === 'TypeError') {
+      showError('Sem conexão com o servidor. Verifique sua internet e tente novamente, ou entre em contato pelo WhatsApp.');
+    } else {
+      showError('Erro inesperado. Por favor, entre em contato pelo WhatsApp.');
+    }
+  }
+}
+
+// ── Exibir estados ────────────────────────────────────────────────────
+function showConflict(conflict) {
+  resetSubmitBtn();
+  document.getElementById('formStep2').style.display   = 'none';
+  document.getElementById('formConflict').style.display = 'block';
+  document.getElementById('formSteps').style.display    = 'none';
+
+  const msg = conflict?.summary
+    ? `O horário selecionado está ocupado com "${conflict.summary}". Escolha outro dia ou horário abaixo.`
+    : 'Esse horário já está ocupado. Escolha outro horário.';
+  document.getElementById('conflictMsg').textContent = msg;
+}
+
+function showSuccess({ bookingId, date, time, name }) {
+  document.getElementById('formStep2').style.display  = 'none';
+  document.getElementById('formSteps').style.display  = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+
+  // Formatar data legível
+  let dateStr = date;
+  try {
+    dateStr = new Date(date + 'T12:00:00').toLocaleDateString('pt-BR', {
+      weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
+    });
+  } catch(_) {}
+
+  document.getElementById('successDetail').innerHTML =
+    `<strong>Nome:</strong> ${name}<br>` +
+    `<strong>Data:</strong> ${dateStr}<br>` +
+    `<strong>Horário:</strong> ${time}<br>` +
+    (bookingId ? `<strong>Código:</strong> ${bookingId}` : '');
+
+  const waMsg = encodeURIComponent(
+    `Olá Vinícius! Acabei de agendar uma reunião pelo site da Demétrio Films.\n\n` +
+    `Nome: ${name}\nData: ${dateStr}\nHorário: ${time}\n` +
+    (bookingId ? `Código: ${bookingId}` : '')
+  );
+  document.getElementById('successWhatsapp').href = `https://wa.me/5547996101762?text=${waMsg}`;
+}
+
+function showError(msg) {
+  resetSubmitBtn();
+  document.getElementById('formStep2').style.display = 'none';
+  document.getElementById('formError').style.display  = 'block';
+  document.getElementById('formSteps').style.display  = 'none';
+  document.getElementById('errorMsg').textContent = msg;
+}
+
+function resetSubmitBtn() {
+  const btn = document.querySelector('#formStep2 .btn-submit');
+  const backBtn = document.querySelector('#formStep2 .btn-back');
+  if (btn) btn.disabled = false;
+  if (backBtn) backBtn.disabled = false;
+  const txt = document.getElementById('btnSubmitText');
+  const ldr = document.getElementById('btnSubmitLoading');
+  if (txt) txt.style.display = 'inline';
+  if (ldr) ldr.style.display = 'none';
+}
