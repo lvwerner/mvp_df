@@ -1,18 +1,12 @@
-# ─── Variáveis de Ambiente — Demétrio Films ──────────────────────────────────
-# Copie este arquivo como .env.local para desenvolvimento local.
-# Em produção, configure via Vercel Dashboard > Settings > Environment Variables.
-# NUNCA faça commit do .env.local no git.
-
-# URL do webhook do n8n (sem expor ao frontend)
-# Dev:  http://localhost:5678/webhook-test/schedule
-# Prod: https://SEU-N8N.com/webhook/schedule
-N8N_WEBHOOK_URL=https://SEU-N8N.com/webhook/schedule
-
-# Segredo compartilhado para assinatura HMAC-SHA256
-# Gere com: openssl rand -hex 32
-N8N_WEBHOOK_SECRET=substitua_por_segredo_forte_256bits
-
-# Origem permitida para CORS (seu domínio na Vercel)
-# Dev:  http://localhost:3000
-# Prod: https://demetriofilms.com.br
-ALLOWED_ORIGIN=https://demetriofilms.com.br
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/videos/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Accept-Ranges", "value": "bytes" }
+      ]
+    }
+  ]
+}
