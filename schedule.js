@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demétrio Films — Produtora Audiovisual | Joinville SC</title>
+  <meta name="description" content="A maior produtora audiovisual de Joinville. Mais de R$100 milhões em imóveis comercializados com nossos vídeos. Transformamos negócios em marcas desejadas." />
+  <meta property="og:title" content="Demétrio Films — Produtora Audiovisual" />
+  <meta property="og:description" content="Transformamos negócios em marcas desejadas. +R$100M em imóveis comercializados." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
+  <a href="#about"     onclick="closeMobileMenu()">Sobre</a>
+  <a href="#services"  onclick="closeMobileMenu()">Serviços</a>
+  <a href="#portfolio" onclick="closeMobileMenu()">Portfólio</a>
+  <a href="#process"   onclick="closeMobileMenu()">Processo</a>
+  <a href="#contact"   onclick="closeMobileMenu()">Contato</a>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Demétrio<span>|</span>Films</a>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre</a></li>
+    <li><a href="#services">Serviços</a></li>
+    <li><a href="#portfolio">Portfólio</a></li>
+    <li><a href="#process">Processo</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Solicitar Orçamento</a>
+  <div class="hamburger" onclick="openMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <p class="hero-eyebrow">Produtora Audiovisual · Joinville, SC</p>
+  <h1 class="hero-title">
+    Transformamos<br>negócios em<br><em>marcas desejadas.</em>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      A maior produtora audiovisual de Joinville. Especialistas em vídeos imobiliários de alta performance que geram resultados mensuráveis.
+    </p>
+    <div class="hero-stat">
+      <div class="hero-stat-number">R$100M+</div>
+      <div class="hero-stat-label">em imóveis comercializados<br>com nossos vídeos</div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="fade-in">
+    <p class="about-label">Quem Somos</p>
+    <h2 class="about-title">A imagem certa<br>vende <em>antes</em><br>da palavra.</h2>
+    <p class="about-text">
+      A Demétrio Films nasceu com uma missão clara: elevar o padrão do audiovisual no mercado imobiliário de Joinville. Combinamos técnica cinematográfica, narrativa estratégica e entendimento profundo do mercado para criar conteúdo que converte.
+    </p>
+    <p class="about-text">
+      Nossos vídeos não apenas mostram imóveis — eles criam desejo, constroem marcas e aceleram vendas. Cada projeto é uma parceria estratégica com foco em resultado.
+    </p>
+    <div class="about-stats">
+      <div class="about-stat">
+        <div class="about-stat-num">100M+</div>
+        <div class="about-stat-desc">Em imóveis comercializados</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">5+</div>
+        <div class="about-stat-desc">Anos de mercado</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">#1</div>
+        <div class="about-stat-desc">Produtora em Joinville</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">SC</div>
+        <div class="about-stat-desc">Santa Catarina</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-visual fade-in">
+    <div class="about-visual-box">
+      <div class="about-logo-display">Demétrio<span>|</span>Films</div>
+      <div class="about-visual-tag">Joinville · SC</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services">
+  <div class="section-header fade-in">
+    <div>
+      <p class="section-label">O que fazemos</p>
+      <h2 class="section-title">Serviços que<br><em>geram resultado</em></h2>
+    </div>
+  </div>
+  <div class="services-grid fade-in">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <h3 class="service-title">Vídeo Imobiliário</h3>
+      <p class="service-desc">Tour virtual cinematográfico, drone aéreo e edição de alto impacto para lançamentos, vendas e locações.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <h3 class="service-title">Branding Audiovisual</h3>
+      <p class="service-desc">Construímos a identidade visual em movimento das maiores construtoras e incorporadoras da região.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <h3 class="service-title">Reels & Social Media</h3>
+      <p class="service-desc">Conteúdo estratégico para Instagram. Vídeos curtos, impactantes e otimizados para conversão e alcance orgânico.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <h3 class="service-title">Fotografia Corporativa</h3>
+      <p class="service-desc">Ensaios fotográficos para empresas, incorporadoras e profissionais do mercado imobiliário.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <h3 class="service-title">Produção de Campanha</h3>
+      <p class="service-desc">Planejamento estratégico e execução completa de campanhas audiovisuais para lançamentos imobiliários.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <h3 class="service-title">Cobertura de Eventos</h3>
+      <p class="service-desc">Registro profissional de lançamentos, feiras e eventos corporativos com qualidade cinematográfica.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PORTFOLIO ═══ -->
+<section id="portfolio">
+  <div class="section-header fade-in">
+    <div>
+      <p class="section-label">Portfólio</p>
+      <h2 class="section-title">Trabalhos que<br><em>falam por si</em></h2>
+    </div>
+    <a href="https://www.instagram.com/demetriofilms" target="_blank" class="btn-secondary" style="white-space:nowrap;">
+      Ver Instagram ↗
+    </a>
+  </div>
+
+  <!-- ── Imobiliário ── -->
+  <div class="portfolio-category-label fade-in">
+    <span class="cat-line"></span>
+    <span class="cat-text">Imobiliário</span>
+    <span class="cat-line"></span>
+  </div>
+
+  <div class="reels-grid three-col fade-in">
+
+    <!--
+      COMO ADICIONAR SEUS VÍDEOS:
+      1. Coloque o arquivo .mp4 na pasta /videos/
+      2. Troque o src do <video> pelo caminho do arquivo
+      3. Opcionalmente coloque uma thumbnail .jpg em /videos/ e troque o poster=""
+      4. Os vídeos tocam automaticamente no hover (desktop) ou ao rolar (mobile)
+    -->
+
+    <!-- Reel Imob 1 -->
+    <div class="reel-card" data-ig="https://www.instagram.com/p/DVwlPekgJ1X/">
+      <video
+        class="reel-video"
+        src="videos/imob-1.mp4"
+        poster="videos/imob-1-thumb.jpg"
+        loop playsinline preload="none"
+      ></video>
+      <!-- Fallback se o vídeo não existir -->
+      <div class="reel-ig-fallback" id="fallback-imob1" style="display:none;">
+        <svg class="ig-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="rgba(255,255,255,0.5)" stroke="none"/>
+        </svg>
+        <p>Adicione o vídeo<br><code>videos/imob-1.mp4</code></p>
+        <a href="https://www.instagram.com/p/DVwlPekgJ1X/" target="_blank">Ver no Instagram ↗</a>
+      </div>
+      <div class="reel-gradient"></div>
+      <div class="reel-play-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <button class="reel-sound" title="Ativar som">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+      </button>
+      <div class="reel-meta">
+        <span class="reel-tag">Imobiliário</span>
+        <span class="reel-title">Tour Premium</span>
+      </div>
+    </div>
+
+    <!-- Reel Imob 2 -->
+    <div class="reel-card" data-ig="https://www.instagram.com/p/DPXLrUpgPC1/">
+      <video
+        class="reel-video"
+        src="videos/imob-2.mp4"
+        poster="videos/imob-2-thumb.jpg"
+        loop playsinline preload="none"
+      ></video>
+      <div class="reel-ig-fallback" id="fallback-imob2" style="display:none;">
+        <svg class="ig-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="rgba(255,255,255,0.5)" stroke="none"/>
+        </svg>
+        <p>Adicione o vídeo<br><code>videos/imob-2.mp4</code></p>
+        <a href="https://www.instagram.com/p/DPXLrUpgPC1/" target="_blank">Ver no Instagram ↗</a>
+      </div>
+      <div class="reel-gradient"></div>
+      <div class="reel-play-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <button class="reel-sound" title="Ativar som">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+      </button>
+      <div class="reel-meta">
+        <span class="reel-tag">Imobiliário</span>
+        <span class="reel-title">Lançamento</span>
+      </div>
+    </div>
+
+    <!-- Reel Imob 3 -->
+    <div class="reel-card" data-ig="https://www.instagram.com/p/DP4w6nzkd5E/">
+      <video
+        class="reel-video"
+        src="videos/imob-3.mp4"
+        poster="videos/imob-3-thumb.jpg"
+        loop playsinline preload="none"
+      ></video>
+      <div class="reel-ig-fallback" id="fallback-imob3" style="display:none;">
+        <svg class="ig-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="rgba(255,255,255,0.5)" stroke="none"/>
+        </svg>
+        <p>Adicione o vídeo<br><code>videos/imob-3.mp4</code></p>
+        <a href="https://www.instagram.com/p/DP4w6nzkd5E/" target="_blank">Ver no Instagram ↗</a>
+      </div>
+      <div class="reel-gradient"></div>
+      <div class="reel-play-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <button class="reel-sound" title="Ativar som">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+      </button>
+      <div class="reel-meta">
+        <span class="reel-tag">Imobiliário</span>
+        <span class="reel-title">Alto Padrão</span>
+      </div>
+    </div>
+
+  </div><!-- /reels-grid imobiliário -->
+
+  <!-- ── Institucional ── -->
+  <div class="portfolio-category-label fade-in" style="margin-top: 60px;">
+    <span class="cat-line"></span>
+    <span class="cat-text">Institucional</span>
+    <span class="cat-line"></span>
+  </div>
+
+  <div class="reels-grid fade-in" style="grid-template-columns: repeat(3, 1fr);">
+
+    <!-- Reel Institucional -->
+    <div class="reel-card" data-ig="https://www.instagram.com/p/DPuaUZuEdpE/">
+      <video
+        class="reel-video"
+        src="videos/institucional-1.mp4"
+        poster="videos/institucional-1-thumb.jpg"
+        loop playsinline preload="none"
+      ></video>
+      <div class="reel-ig-fallback" id="fallback-inst1" style="display:none;">
+        <svg class="ig-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="rgba(255,255,255,0.5)" stroke="none"/>
+        </svg>
+        <p>Adicione o vídeo<br><code>videos/institucional-1.mp4</code></p>
+        <a href="https://www.instagram.com/p/DPuaUZuEdpE/" target="_blank">Ver no Instagram ↗</a>
+      </div>
+      <div class="reel-gradient"></div>
+      <div class="reel-play-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <button class="reel-sound" title="Ativar som">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+      </button>
+      <div class="reel-meta">
+        <span class="reel-tag">Institucional · Ferramentaria</span>
+        <span class="reel-title">Maior de Joinville</span>
+      </div>
+    </div>
+
+    <!-- Slots vazios para futuros vídeos -->
+    <div class="reel-card" style="cursor:default; pointer-events:none;">
+      <div class="reel-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Em breve</span>
+      </div>
+    </div>
+    <div class="reel-card" style="cursor:default; pointer-events:none;">
+      <div class="reel-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Em breve</span>
+      </div>
+    </div>
+
+  </div><!-- /reels-grid institucional -->
+</section>
+
+<!-- ═══ PROCESS ═══ -->
+<section id="process">
+  <div class="section-header fade-in">
+    <div>
+      <p class="section-label">Como trabalhamos</p>
+      <h2 class="section-title">Processo<br><em>sem surpresas</em></h2>
+    </div>
+  </div>
+  <div class="process-steps fade-in">
+    <div class="process-step">
+      <div class="process-step-num">01</div>
+      <h3 class="process-step-title">Briefing Estratégico</h3>
+      <p class="process-step-desc">Entendemos seu produto, público e objetivos. Definimos a narrativa visual que vai gerar o resultado esperado.</p>
+      <div class="process-step-line"></div>
+    </div>
+    <div class="process-step">
+      <div class="process-step-num">02</div>
+      <h3 class="process-step-title">Produção</h3>
+      <p class="process-step-desc">Equipe especializada, equipamentos de ponta e direção criativa alinhada com sua marca.</p>
+      <div class="process-step-line"></div>
+    </div>
+    <div class="process-step">
+      <div class="process-step-num">03</div>
+      <h3 class="process-step-title">Edição & Refinamento</h3>
+      <p class="process-step-desc">Pós-produção com grading cinematográfico, trilha e revisões até a perfeição. Você aprova antes de publicar.</p>
+      <div class="process-step-line"></div>
+    </div>
+    <div class="process-step">
+      <div class="process-step-num">04</div>
+      <h3 class="process-step-title">Entrega & Resultado</h3>
+      <p class="process-step-desc">Arquivos otimizados para cada plataforma e suporte na publicação. Acompanhamos os resultados.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="contact-left fade-in">
+    <p class="section-label">Próximo Passo</p>
+    <h2 class="contact-title">Vamos criar algo<br><em>extraordinário</em><br>juntos.</h2>
+    <p class="contact-desc">
+      Pronto para transformar seu negócio em uma marca desejada? Solicite um orçamento ou agende uma reunião de estratégia. Respondemos em até 24h.
+    </p>
+    <div class="contact-actions">
+      <a href="https://wa.me/5547996101762?text=Olá%20Vinícius!%20Vim%20pelo%20site%20da%20Demétrio%20Films%20e%20gostaria%20de%20solicitar%20um%20orçamento." target="_blank" class="btn-primary">
+        Falar pelo WhatsApp ↗
+      </a>
+      <a href="https://www.instagram.com/demetriofilms" target="_blank" class="btn-secondary">
+        Ver Instagram ↗
+      </a>
+    </div>
+    <div class="contact-info-block">
+      <div class="contact-info-item">
+        <p class="contact-info-label">Responsável Comercial</p>
+        <p class="contact-info-name">Vinícius Werner</p>
+        <p class="contact-info-sub">Atendimento & Orçamentos</p>
+      </div>
+      <div class="contact-info-item">
+        <p class="contact-info-label">WhatsApp</p>
+        <a href="https://wa.me/5547996101762" target="_blank" class="contact-info-link">(47) 9 9610-1762</a>
+      </div>
+      <div class="contact-info-item">
+        <p class="contact-info-label">E-mail</p>
+        <a href="mailto:viniciushhardt@gmail.com" class="contact-info-link small">viniciushhardt@gmail.com</a>
+      </div>
+      <div class="contact-info-item">
+        <p class="contact-info-label">Localização</p>
+        <p class="contact-info-sub" style="font-size:0.9rem; line-height:1.8;">Joinville, Santa Catarina<br>Brasil</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form fade-in">
+
+    <!-- ── Indicador de etapas ── -->
+    <div class="form-steps" id="formSteps">
+      <div class="form-step-item active" data-step="1">
+        <span class="step-dot">1</span>
+        <span class="step-label">Projeto</span>
+      </div>
+      <div class="form-step-divider"></div>
+      <div class="form-step-item" data-step="2">
+        <span class="step-dot">2</span>
+        <span class="step-label">Horário</span>
+      </div>
+      <div class="form-step-divider"></div>
+      <div class="form-step-item" data-step="3">
+        <span class="step-dot">3</span>
+        <span class="step-label">Confirmação</span>
+      </div>
+    </div>
+
+    <!-- ══ ETAPA 1 — Dados do projeto ══ -->
+    <div id="formStep1">
+      <h3 class="form-title">Solicitar Orçamento</h3>
+      <p class="form-subtitle">Preencha e agendaremos uma reunião estratégica</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome *</label>
+          <input type="text" id="fname" placeholder="Seu nome" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label>WhatsApp *</label>
+          <input type="tel" id="fphone" placeholder="(47) 9 9999-9999" autocomplete="tel" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" id="femail" placeholder="seu@email.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Empresa / Construtora</label>
+        <input type="text" id="fcompany" placeholder="Nome da sua empresa" autocomplete="organization" />
+      </div>
+      <div class="form-group">
+        <label>Tipo de projeto *</label>
+        <select id="ftype">
+          <option value="" disabled selected>Selecione o tipo de projeto</option>
+          <option>Vídeo Imobiliário</option>
+          <option>Branding Audiovisual</option>
+          <option>Reels &amp; Social Media</option>
+          <option>Fotografia Corporativa</option>
+          <option>Produção de Campanha</option>
+          <option>Cobertura de Evento</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Conte sobre seu projeto</label>
+        <textarea id="fmessage" placeholder="Descreva brevemente o que você precisa, prazo e informações relevantes..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="goToStep2()">Próximo: Escolher Horário →</button>
+    </div>
+
+    <!-- ══ ETAPA 2 — Escolha de data e horário ══ -->
+    <div id="formStep2" style="display:none;">
+      <h3 class="form-title">Agendar Reunião</h3>
+      <p class="form-subtitle">Escolha o melhor dia e horário para a conversa</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data *</label>
+          <input type="date" id="fdate" />
+        </div>
+        <div class="form-group">
+          <label>Horário *</label>
+          <select id="ftime">
+            <option value="" disabled selected>Selecione</option>
+            <option value="08:00">08:00</option>
+            <option value="08:30">08:30</option>
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+            <option value="11:30">11:30</option>
+            <option value="13:00">13:00</option>
+            <option value="13:30">13:30</option>
+            <option value="14:00">14:00</option>
+            <option value="14:30">14:30</option>
+            <option value="15:00">15:00</option>
+            <option value="15:30">15:30</option>
+            <option value="16:00">16:00</option>
+            <option value="16:30">16:30</option>
+            <option value="17:00">17:00</option>
+            <option value="17:30">17:30</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-info-box" id="scheduleInfo">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>A reunião de alinhamento dura aproximadamente 30 minutos. Confirmaremos a disponibilidade em tempo real.</span>
+      </div>
+
+      <div class="form-btn-row">
+        <button class="btn-back" onclick="goToStep1()">← Voltar</button>
+        <button class="btn-submit" onclick="submitSchedule()">
+          <span id="btnSubmitText">Confirmar Agendamento →</span>
+          <span id="btnSubmitLoading" style="display:none;">
+            <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            Verificando...
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ ESTADO: Conflito de horário ══ -->
+    <div id="formConflict" style="display:none;">
+      <div class="form-conflict">
+        <div class="form-conflict-icon">◈</div>
+        <h3>Horário Indisponível</h3>
+        <p id="conflictMsg">Esse horário já está ocupado na nossa agenda. Escolha outro horário abaixo.</p>
+        <button class="btn-submit" onclick="backToSchedule()" style="margin-top:24px;">Escolher outro horário →</button>
+      </div>
+    </div>
+
+    <!-- ══ ESTADO: Sucesso ══ -->
+    <div id="formSuccess" style="display:none;">
+      <div class="form-success">
+        <div class="form-success-icon">✦</div>
+        <h3>Reunião Agendada!</h3>
+        <p id="successMsg">Sua reunião foi confirmada e adicionada à nossa agenda. Entraremos em contato pelo WhatsApp para confirmar os detalhes.</p>
+        <div class="form-success-detail" id="successDetail"></div>
+        <a id="successWhatsapp" href="https://wa.me/5547996101762" target="_blank" class="btn-submit" style="display:inline-block;margin-top:28px;text-decoration:none;">
+          Falar pelo WhatsApp ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- ══ ESTADO: Erro ══ -->
+    <div id="formError" style="display:none;">
+      <div class="form-error">
+        <div class="form-error-icon">✕</div>
+        <h3>Algo deu errado</h3>
+        <p id="errorMsg">Não foi possível processar sua solicitação. Por favor, tente novamente ou entre em contato pelo WhatsApp.</p>
+        <div class="form-error-actions">
+          <button class="btn-back" onclick="resetForm()">Tentar novamente</button>
+          <a href="https://wa.me/5547996101762?text=Olá%20Vinícius!%20Tentei%20agendar%20pelo%20site%20mas%20ocorreu%20um%20erro." target="_blank" class="btn-submit" style="text-decoration:none;">
+            WhatsApp ↗
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">Demétrio<span>|</span>Films</div>
+  <p class="footer-copy">© 2025 Demétrio Films · Joinville, SC</p>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/demetriofilms" target="_blank">Instagram</a>
+    <a href="https://wa.me/5547996101762" target="_blank">WhatsApp</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

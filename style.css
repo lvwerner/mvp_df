@@ -1,0 +1,134 @@
+import crypto from 'crypto'
+
+export default async function handler(req, res) {
+  // Apenas POST
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  // CORS para o próprio domínio
+  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*')
+  res.setHeader('Access-Control-Allow-Methods', 'POST')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+
+  const { name, phone, email, company, service, message, date, time } = req.body || {}
+
+  // Validação dos campos obrigatórios
+  if (!name || !phone || !service) {
+    return res.status(400).json({
+      error: 'Campos obrigatórios ausentes: nome, WhatsApp e tipo de projeto.'
+    })
+  }
+
+  // Validação básica de data/hora se fornecidos
+  if (date && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return res.status(400).json({ error: 'Formato de data inválido.' })
+  }
+  if (time && !/^\d{2}:\d{2}$/.test(time)) {
+    return res.status(400).json({ error: 'Formato de hora inválido.' })
+  }
+
+  // Gerar booking_id idempotente baseado em email+data+hora
+  // Se não houver data/hora, usa timestamp do minuto atual (janela de 1 min para dedup)
+  const idBase = date && time
+    ? `${phone}:${date}:${time}`
+    : `${phone}:${Math.floor(Date.now() / 60000)}`
+
+  const bookingId = crypto
+    .createHash('sha256')
+    .update(idBase)
+    .digest('hex')
+    .slice(0, 16)
+
+  // Montar payload para o n8n
+  const payload = JSON.stringify({
+    bookingId,
+    name: name.trim(),
+    phone: phone.trim(),
+    email: (email || '').trim(),
+    company: (company || '').trim(),
+    service,
+    message: (message || '').trim(),
+    date: date || null,
+    time: time || null,
+    timezone: 'America/Sao_Paulo',
+    source: 'website-demetriofilms',
+    submittedAt: new Date().toISOString(),
+  })
+
+  // Assinar com HMAC-SHA256
+  const secret = process.env.N8N_WEBHOOK_SECRET
+  if (!secret) {
+    console.error('[schedule] N8N_WEBHOOK_SECRET não configurado')
+    return res.status(500).json({ error: 'Erro de configuração do servidor.' })
+  }
+
+  const signature = crypto
+    .createHmac('sha256', secret)
+    .update(payload)
+    .digest('hex')
+
+  // Encaminhar ao n8n com timeout de 10s
+  const n8nUrl = process.env.N8N_WEBHOOK_URL
+  if (!n8nUrl) {
+    console.error('[schedule] N8N_WEBHOOK_URL não configurado')
+    return res.status(500).json({ error: 'Erro de configuração do servidor.' })
+  }
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10000)
+
+  try {
+    const n8nRes = await fetch(n8nUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Signature': `sha256=${signature}`,
+        'X-Booking-Id': bookingId,
+        'X-Source': 'demetriofilms-website',
+      },
+      body: payload,
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeout)
+
+    // n8n pode retornar 200 com JSON ou corpo vazio
+    let n8nData = {}
+    try {
+      const text = await n8nRes.text()
+      if (text) n8nData = JSON.parse(text)
+    } catch (_) {}
+
+    if (!n8nRes.ok) {
+      console.error('[schedule] n8n retornou erro:', n8nRes.status, n8nData)
+      return res.status(502).json({
+        error: 'Falha ao processar agendamento. Tente novamente ou entre em contato pelo WhatsApp.'
+      })
+    }
+
+    // Sucesso
+    return res.status(200).json({
+      success: true,
+      bookingId,
+      message: n8nData.message || 'Solicitação recebida com sucesso.',
+      ...(n8nData.conflict ? { conflict: n8nData.conflict } : {}),
+      ...(n8nData.eventLink ? { eventLink: n8nData.eventLink } : {}),
+    })
+
+  } catch (err) {
+    clearTimeout(timeout)
+
+    if (err.name === 'AbortError') {
+      console.error('[schedule] Timeout ao chamar n8n')
+      return res.status(504).json({
+        error: 'O servidor demorou para responder. Sua solicitação pode ter sido recebida — aguarde nosso contato pelo WhatsApp.'
+      })
+    }
+
+    console.error('[schedule] Erro inesperado:', err.message)
+    return res.status(500).json({
+      error: 'Erro interno. Por favor, tente novamente ou entre em contato pelo WhatsApp.'
+    })
+  }
+}
