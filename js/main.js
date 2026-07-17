@@ -1,3 +1,22 @@
+// ─── TEMA CLARO / ESCURO ─────────────────────────────────
+(function () {
+  // 1. Lê preferência salva; se não houver, usa preferência do sistema
+  const saved = localStorage.getItem('df-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isLight = saved === 'light' || (!saved && !prefersDark);
+  if (isLight) document.documentElement.classList.add('light');
+})();
+
+function initThemeToggle() {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const isLight = document.documentElement.classList.toggle('light');
+    localStorage.setItem('df-theme', isLight ? 'light' : 'dark');
+  });
+}
+document.addEventListener('DOMContentLoaded', initThemeToggle);
+
 // ─── CURSOR ───────────────────────────────────────────────
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
@@ -42,6 +61,16 @@ document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
 // ─── REEL AUTOPLAY ENGINE ────────────────────────────────
 let currentlyPlaying = null;
 const isMobile = () => window.matchMedia('(pointer: coarse)').matches;
+
+// Esconde fallback quando vídeo carrega com sucesso, mostra quando falha
+document.querySelectorAll('.reel-video').forEach(video => {
+  const fallback = video.closest('.reel-card').querySelector('.reel-ig-fallback');
+  if (!fallback) return;
+  // começa escondido — mostra só se o vídeo falhar
+  fallback.style.display = 'none';
+  video.addEventListener('error', () => { fallback.style.display = 'flex'; });
+  video.addEventListener('loadeddata', () => { fallback.style.display = 'none'; });
+});
 
 function playReel(card) {
   const video = card.querySelector('.reel-video');
@@ -132,6 +161,78 @@ function iconSound() {
   </svg>`;
 }
 
+// ─── SEÇÃO IA — EXPANDIR / RECOLHER ─────────────────────
+function toggleIA() {
+  const content = document.getElementById('iaContent');
+  const btn     = document.getElementById('iaToggleBtn');
+  if (!content || !btn) return;
+
+  const isOpen = content.classList.contains('ia-open');
+
+  if (isOpen) {
+    content.querySelectorAll('.reel-card').forEach(card => pauseReel(card));
+    content.classList.remove('ia-open');
+    btn.setAttribute('aria-expanded', 'false');
+    content.setAttribute('aria-hidden', 'true');
+  } else {
+    content.classList.add('ia-open');
+    btn.setAttribute('aria-expanded', 'true');
+    content.setAttribute('aria-hidden', 'false');
+
+    // registra os cards da IA no engine de autoplay (uma só vez por card)
+    content.querySelectorAll('.reel-card:not([data-registered])').forEach(card => {
+      card.setAttribute('data-registered', '1');
+
+      // fallback: esconde se vídeo OK, mostra se erro
+      const video = card.querySelector('.reel-video');
+      const fallback = card.querySelector('.reel-ig-fallback');
+      if (video && fallback) {
+        fallback.style.display = 'none';
+        video.addEventListener('error', () => { fallback.style.display = 'flex'; });
+        video.addEventListener('loadeddata', () => { fallback.style.display = 'none'; });
+      }
+
+      card.addEventListener('mouseenter', () => {
+        if (!isMobile()) playReel(card);
+        cursor.classList.add('expand');
+        cursor.classList.add('play-cursor');
+      });
+      card.addEventListener('mouseleave', () => {
+        if (!isMobile()) pauseReel(card);
+        cursor.classList.remove('expand');
+        cursor.classList.remove('play-cursor');
+      });
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.reel-sound') || e.target.closest('.reel-ig-link')) return;
+        card.classList.contains('playing') ? pauseReel(card) : playReel(card);
+      });
+
+      const soundBtn = card.querySelector('.reel-sound');
+      if (soundBtn) {
+        soundBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const video = card.querySelector('.reel-video');
+          if (!video) return;
+          video.muted = !video.muted;
+          soundBtn.innerHTML = video.muted ? iconMuted() : iconSound();
+        });
+      }
+
+      if (isMobile()) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) playReel(card);
+            else pauseReel(card);
+          });
+        }, { threshold: [0, 0.6] });
+        obs.observe(card);
+      }
+    });
+
+    setTimeout(() => content.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+  }
+}
+
 // ─── FORM SUBMIT ─────────────────────────────────────────
 function submitForm() {
   const fname    = document.getElementById('fname').value.trim();
@@ -146,7 +247,7 @@ function submitForm() {
   }
 
   const msg = encodeURIComponent(
-    `Olá Vinícius! Vim pelo site da Demétrio Films.\n\n` +
+    `Olá Jonas! Vim pelo site da Demétrio Films.\n\n` +
     `Nome: ${fname}\n` +
     `Telefone: ${fphone}\n` +
     `Projeto: ${ftype}\n` +
@@ -154,7 +255,7 @@ function submitForm() {
     (fmessage ? `\nMensagem: ${fmessage}` : '')
   );
 
-  window.open(`https://wa.me/5547996101762?text=${msg}`, '_blank');
+  window.open(`https://wa.me/5547997137549?text=${msg}`, '_blank');
   document.getElementById('formContent').style.display = 'none';
   document.getElementById('formSuccess').classList.add('show');
 }
