@@ -19,10 +19,18 @@ document.addEventListener('DOMContentLoaded', initThemeToggle);
 
 // ─── CURSOR ───────────────────────────────────────────────
 const cursor = document.getElementById('cursor');
+const cursorPos = { x: -100, y: -100, tx: -100, ty: -100 };
 document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
+  cursorPos.tx = e.clientX;
+  cursorPos.ty = e.clientY;
 });
+(function followCursor() {
+  // interpolação suave: o cursor "persegue" o mouse
+  cursorPos.x += (cursorPos.tx - cursorPos.x) * 0.22;
+  cursorPos.y += (cursorPos.ty - cursorPos.y) * 0.22;
+  cursor.style.transform = `translate3d(${cursorPos.x}px, ${cursorPos.y}px, 0)`;
+  requestAnimationFrame(followCursor);
+})();
 document.querySelectorAll('a, button, .service-card').forEach(el => {
   el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
   el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
@@ -241,6 +249,12 @@ function submitForm() {
   const fcompany = document.getElementById('fcompany').value.trim();
   const fmessage = document.getElementById('fmessage').value.trim();
 
+  [['fname', fname], ['fphone', fphone], ['ftype', ftype]].forEach(([id, val]) => {
+    const group = document.getElementById(id).closest('.form-group');
+    group.classList.remove('invalid');
+    if (!val) { void group.offsetWidth; group.classList.add('invalid'); }
+  });
+
   if (!fname || !fphone || !ftype) {
     alert('Por favor, preencha os campos obrigatórios: Nome, WhatsApp e Tipo de projeto.');
     return;
@@ -259,3 +273,118 @@ function submitForm() {
   document.getElementById('formContent').style.display = 'none';
   document.getElementById('formSuccess').classList.add('show');
 }
+
+// ─── REFINAMENTOS DE MOVIMENTO ───────────────────────────
+(function () {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer  = window.matchMedia('(pointer: fine)').matches;
+
+  // limpa o destaque de erro assim que o campo é preenchido
+  ['fname', 'fphone', 'ftype'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const clear = () => el.value.trim() && el.closest('.form-group').classList.remove('invalid');
+    el.addEventListener('input', clear);
+    el.addEventListener('change', clear);
+  });
+
+  // índice de cascata para os filhos das grades
+  document.querySelectorAll('.services-grid, .reels-grid, .process-steps, .about-stats').forEach(grid => {
+    [...grid.children].forEach((child, i) => child.style.setProperty('--i', i));
+  });
+
+  // barra de progresso de leitura
+  const progress = document.querySelector('.scroll-progress');
+  const updateProgress = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.setProperty('--progress', max > 0 ? (window.scrollY / max).toFixed(4) : 0);
+  };
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // link ativo no menu conforme a seção visível
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('section[id]').forEach(section => spy.observe(section));
+
+  // contagem animada nos números (o texto final é exatamente o original)
+  const countUp = el => {
+    const original = el.textContent.trim();
+    const match = original.match(/^(\D*)(\d+)(\D*)$/);
+    if (!match || reduceMotion) return;
+    const [, pre, num, post] = match;
+    const target = parseInt(num, 10);
+    if (target < 5) return;
+    const duration = 1800;
+    const start = performance.now();
+    const tick = now => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 4);
+      el.textContent = pre + Math.round(target * eased) + post;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = original;
+    };
+    requestAnimationFrame(tick);
+  };
+  const countObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      countObserver.unobserve(entry.target);
+      setTimeout(() => countUp(entry.target), 250);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.hero-stat-number, .about-stat-num').forEach(el => countObserver.observe(el));
+
+
+  if (!finePointer || reduceMotion) return;
+
+  // holofote que acompanha o cursor nos cards e no formulário
+  document.querySelectorAll('.service-card, .contact-form').forEach(el => {
+    el.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  });
+
+  // brilho do hero acompanha o mouse
+  const hero = document.getElementById('hero');
+  const glow = document.querySelector('.hero-glow');
+  if (hero && glow) {
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect();
+      glow.style.setProperty('--gx', `${(e.clientX - r.left - r.width / 2) * 0.25}px`);
+      glow.style.setProperty('--gy', `${(e.clientY - r.top - r.height / 2) * 0.25}px`);
+    });
+  }
+
+  // leve inclinação 3D no quadro do "Quem Somos"
+  const box = document.querySelector('.about-visual-box');
+  if (box) {
+    box.addEventListener('pointermove', e => {
+      const r = box.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      box.style.setProperty('--rx', `${px * 6}deg`);
+      box.style.setProperty('--ry', `${-py * 6}deg`);
+    });
+    box.addEventListener('pointerleave', () => {
+      box.style.setProperty('--rx', '0deg');
+      box.style.setProperty('--ry', '0deg');
+    });
+  }
+
+  // botões magnéticos
+  document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta, .ia-toggle-btn').forEach(btn => {
+    btn.addEventListener('pointermove', e => {
+      const r = btn.getBoundingClientRect();
+      btn.style.translate = `${(e.clientX - r.left - r.width / 2) * 0.12}px ${(e.clientY - r.top - r.height / 2) * 0.2}px`;
+    });
+    btn.addEventListener('pointerleave', () => { btn.style.translate = ''; });
+  });
+})();
